@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1020"/>
+      <stop offset="100%" stop-color="#160d30"/>
+    </linearGradient>
+
+    <!-- Heart fill: deep indigo with glow -->
+    <linearGradient id="heartFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.12"/>
+    </linearGradient>
+
+    <!-- Heart stroke gradient -->
+    <linearGradient id="heartStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+
+    <!-- ECG/pulse line: cyan -->
+    <linearGradient id="pulseG" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0"/>
+      <stop offset="20%"  stop-color="#22d3ee"/>
+      <stop offset="80%"  stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Subtle outer ring -->
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <!-- Glow: heart -->
+    <filter id="gHeart" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Glow: pulse -->
+    <filter id="gPulse" x="-10%" y="-200%" width="120%" height="500%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <clipPath id="circClip">
+      <circle cx="32" cy="32" r="30"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <circle cx="32" cy="32" r="32" fill="url(#bg)"/>
+
+  <!-- Subtle dot grid -->
+  <g clip-path="url(#circClip)" opacity="0.07">
+    <circle cx="16" cy="16" r="1" fill="#6366f1"/>
+    <circle cx="32" cy="16" r="1" fill="#6366f1"/>
+    <circle cx="48" cy="16" r="1" fill="#6366f1"/>
+    <circle cx="16" cy="32" r="1" fill="#6366f1"/>
+    <circle cx="48" cy="32" r="1" fill="#6366f1"/>
+    <circle cx="16" cy="48" r="1" fill="#6366f1"/>
+    <circle cx="32" cy="48" r="1" fill="#6366f1"/>
+    <circle cx="48" cy="48" r="1" fill="#6366f1"/>
+  </g>
+
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="29.5" fill="none" stroke="url(#ring)" stroke-width="0.8"/>
+
+  <!-- Heart shape (filled + stroked) -->
+  <g filter="url(#gHeart)">
+    <!-- Heart path centred at 32,33, spans ~28×25px -->
+    <path
+      d="M32,44
+         C32,44 14,34 14,23
+         C14,17.5 18.5,13 24,13
+         C27.2,13 30,14.8 32,17.5
+         C34,14.8 36.8,13 40,13
+         C45.5,13 50,17.5 50,23
+         C50,34 32,44 32,44Z"
+      fill="url(#heartFill)"
+      stroke="url(#heartStroke)"
+      stroke-width="1.6"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- ECG pulse line across the heart at ~y=30 -->
+  <g filter="url(#gPulse)" clip-path="url(#circClip)">
+    <polyline
+      points="14,30 20,30 23,22 26,38 29,26 31.5,33 33,28.5 35,30 40,30 50,30"
+      fill="none"
+      stroke="url(#pulseG)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Small cyan accent spark top-right -->
+  <circle cx="47" cy="14" r="1.5" fill="#22d3ee" opacity="0.6"/>
+  <circle cx="44" cy="12" r="0.8" fill="#818cf8" opacity="0.5"/>
+</svg>
