@@ -4,454 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to CareBot – Your AI Hospital Assistant</title>
-  <meta name="description" content="Welcome to CareBot. Your intelligent healthcare companion available 24/7. Get instant medical guidance, book appointments, and access quality healthcare." />
+  <meta name="description" content="Welcome to CareBot. Your intelligent healthcare companion available 24/7." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg?v=3" />
-  <link rel="alternate icon" href="favicon.svg?v=3" />
   <link rel="apple-touch-icon" href="favicon.svg?v=3" />
   <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)" />
   <meta name="theme-color" content="#f8faff" media="(prefers-color-scheme: light)" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    /* ─── DESIGN TOKENS ─── */
-    :root {
-      --transition: 0.3s ease;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --radius-xl: 28px;
-      --primary: #6366f1;
-      --primary-glow: rgba(99,102,241,0.35);
-      --accent: #06b6d4;
-      --success: #10b981;
-    }
-
-    [data-theme="dark"] {
-      --bg: #07090f;
-      --bg-2: #0d1117;
-      --bg-3: #111827;
-      --surface: rgba(255,255,255,0.04);
-      --surface-hover: rgba(255,255,255,0.07);
-      --border: rgba(255,255,255,0.08);
-      --border-strong: rgba(255,255,255,0.15);
-      --text-primary: #f0f4ff;
-      --text-secondary: #94a3b8;
-      --text-muted: #4b5568;
-      --shadow: 0 8px 32px rgba(0,0,0,0.4);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
-    }
-
-    [data-theme="light"] {
-      --bg: #f8faff;
-      --bg-2: #f0f4ff;
-      --bg-3: #e8eeff;
-      --surface: rgba(255,255,255,0.85);
-      --surface-hover: rgba(255,255,255,0.95);
-      --border: rgba(99,102,241,0.12);
-      --border-strong: rgba(99,102,241,0.25);
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #94a3b8;
-      --shadow: 0 4px 20px rgba(99,102,241,0.1);
-      --shadow-lg: 0 12px 48px rgba(99,102,241,0.15);
-    }
-
-    /* ─── RESET & BASE ─── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
-      line-height: 1.6;
-      transition: background var(--transition), color var(--transition);
-      overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; }
-
-    /* ─── HEADER ─── */
-    .welcome-header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: var(--bg);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-primary);
-    }
-
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: var(--primary);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: white;
-    }
-
-    .logo-icon svg { width: 20px; height: 20px; }
-
-    .logo-text {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .theme-toggle {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      transition: all var(--transition);
-      width: 40px;
-      height: 40px;
-      position: relative;
-    }
-
-    .theme-toggle:hover {
-      border-color: var(--border-strong);
-      background: var(--surface-hover);
-      color: var(--text-primary);
-    }
-
-    .theme-icon {
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity var(--transition), transform var(--transition);
-      width: 18px; height: 18px;
-    }
-
-    .theme-icon svg { width: 100%; height: 100%; }
-
-    [data-theme="dark"] .theme-icon.sun { opacity: 1; transform: rotate(0) scale(1); }
-    [data-theme="dark"] .theme-icon.moon { opacity: 0; transform: rotate(-90deg) scale(0); }
-    [data-theme="light"] .theme-icon.sun { opacity: 0; transform: rotate(90deg) scale(0); }
-    [data-theme="light"] .theme-icon.moon { opacity: 1; transform: rotate(0) scale(1); }
-
-    /* ─── WELCOME SECTION ─── */
-    .welcome-container {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 100px 24px 60px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .welcome-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.25;
-      animation: float 8s ease-in-out infinite;
-    }
-
-    .orb-1 {
-      width: 400px; height: 400px;
-      background: var(--primary);
-      top: -100px; left: -100px;
-      animation-delay: 0s;
-    }
-
-    .orb-2 {
-      width: 300px; height: 300px;
-      background: var(--accent);
-      bottom: -50px; right: 10%;
-      animation-delay: 2s;
-    }
-
-    [data-theme="light"] .orb { opacity: 0.12; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-30px) scale(1.05); }
-    }
-
-    .welcome-content {
-      max-width: 700px;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      animation: fadeInUp 0.8s ease both;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .welcome-icon {
-      font-size: 4rem;
-      margin-bottom: 24px;
-      display: inline-block;
-      animation: bounce 2s ease-in-out infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-
-    .welcome-title {
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .welcome-subtitle {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      margin-bottom: 32px;
-      line-height: 1.7;
-      max-width: 520px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .welcome-features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 16px;
-      margin-bottom: 40px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .feature-badge {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 12px 16px;
-      border-radius: var(--radius-md);
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      transition: all var(--transition);
-      backdrop-filter: blur(8px);
-    }
-
-    .feature-badge:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: rgba(99,102,241,0.08);
-    }
-
-    .welcome-cta {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), #4f46e5);
-      color: white;
-      border: none;
-      padding: 14px 32px;
-      border-radius: var(--radius-md);
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all var(--transition);
-      box-shadow: 0 4px 24px var(--primary-glow);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px var(--primary-glow);
-    }
-
-    .btn-outline {
-      background: var(--surface);
-      color: var(--text-primary);
-      border: 1px solid var(--border-strong);
-      padding: 14px 32px;
-      border-radius: var(--radius-md);
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all var(--transition);
-      backdrop-filter: blur(8px);
-    }
-
-    .btn-outline:hover {
-      background: var(--surface-hover);
-      transform: translateY(-2px);
-      border-color: var(--primary);
-    }
-
-    .btn-primary .arrow,
-    .btn-outline .arrow {
-      transition: transform var(--transition);
-    }
-
-    .btn-primary:hover .arrow,
-    .btn-outline:hover .arrow {
-      transform: translateX(4px);
-    }
-
-    /* ─── SCROLL INDICATOR ─── */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      animation: fadeInDown 1s ease 0.5s both;
-    }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .scroll-mouse {
-      width: 20px;
-      height: 32px;
-      border: 2px solid var(--text-muted);
-      border-radius: 10px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding-top: 6px;
-      animation: scroll 2s infinite;
-    }
-
-    .scroll-mouse::before {
-      content: '';
-      width: 2px;
-      height: 4px;
-      background: var(--text-muted);
-      border-radius: 1px;
-      animation: scroll 2s infinite;
-    }
-
-    @keyframes scroll {
-      0%, 20%, 100% { opacity: 1; transform: translateY(0); }
-      80% { opacity: 0; transform: translateY(8px); }
-    }
-
-    /* ─── STATS ─── */
-    .welcome-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 20px;
-      margin-top: 60px;
-      padding-top: 40px;
-      border-top: 1px solid var(--border);
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-num {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 600px) {
-      .welcome-title { font-size: 1.8rem; }
-      .welcome-subtitle { font-size: 0.95rem; }
-      .welcome-features { grid-template-columns: repeat(2, 1fr); }
-      .welcome-cta { flex-direction: column; }
-      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
-    }
-  </style>
+  <link rel="stylesheet" href="welcome-style.css" />
 </head>
 <body>
 
   <!-- ─── HEADER ─── -->
   <header class="welcome-header">
-    <a href="#" class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 20C12 20 4 14.5 4 9C4 6.5 6 4.5 8.5 4.5C10 4.5 11.2 5.3 12 6.5C12.8 5.3 14 4.5 15.5 4.5C18 4.5 20 6.5 20 9C20 14.5 12 20 12 20Z" fill="currentColor" opacity="0.25" stroke="currentColor" stroke-width="0"/>
-          <path d="M4 11.5 L7 11.5 L8.5 8 L10 14.5 L11 10 L12 12.5 L13 10.5 L14 11.5 L20 11.5" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
-        </svg>
-      </div>
-      <span class="logo-text">CareBot</span>
-    </a>
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 20C12 20 4 14.5 4 9C4 6.5 6 4.5 8.5 4.5C10 4.5 11.2 5.3 12 6.5C12.8 5.3 14 4.5 15.5 4.5C18 4.5 20 6.5 20 9C20 14.5 12 20 12 20Z" fill="currentColor" opacity="0.25" stroke="currentColor" stroke-width="0"/>
+            <path d="M4 11.5 L7 11.5 L8.5 8 L10 14.5 L11 10 L12 12.5 L13 10.5 L14 11.5 L20 11.5" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
+          </svg>
+        </div>
+        <span class="logo-text">CareBot</span>
+      </a>
 
-    <div class="header-actions">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <span class="theme-icon sun">
           <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="currentColor"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </span>
@@ -462,87 +40,207 @@
     </div>
   </header>
 
-  <!-- ─── WELCOME ─── -->
+  <!-- ─── ANIMATED BACKGROUND ─── -->
   <div class="welcome-container">
-    <div class="welcome-bg">
+    <div class="animated-bg">
       <div class="orb orb-1"></div>
       <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="grid-overlay"></div>
+      <canvas id="particleCanvas"></canvas>
     </div>
 
-    <div class="welcome-content">
-      <div class="welcome-icon">🏥</div>
-      <h1 class="welcome-title">
-        Welcome to <span class="gradient-text">CareBot</span>
-      </h1>
-      <p class="welcome-subtitle">
-        Your AI-powered hospital assistant. Get instant answers to health questions, book appointments effortlessly, and access quality healthcare 24/7.
-      </p>
-
-      <div class="welcome-features">
-        <div class="feature-badge">🤖 AI Chat</div>
-        <div class="feature-badge">📅 Appointments</div>
-        <div class="feature-badge">🏥 Departments</div>
-        <div class="feature-badge">🚨 Emergency</div>
-      </div>
-
-      <div class="welcome-cta">
-        <a href="index.html" class="btn-primary">
-          Enter CareBot <span class="arrow">→</span>
-        </a>
-        <a href="#learn-more" class="btn-outline">
-          Learn More <span class="arrow">→</span>
-        </a>
-      </div>
-
-      <div class="welcome-stats">
-        <div class="stat-item">
-          <div class="stat-num">24/7</div>
-          <div class="stat-label">Available</div>
+    <!-- ─── WELCOME HERO ─── -->
+    <section class="welcome-hero">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          <span>Welcome to Healthcare Revolution</span>
         </div>
-        <div class="stat-item">
-          <div class="stat-num">50K+</div>
-          <div class="stat-label">Consultations</div>
+
+        <h1 class="hero-title">
+          <span class="word" style="--delay: 0">Your</span>
+          <span class="word" style="--delay: 1">Personal</span>
+          <span class="word" style="--delay: 2"><span class="gradient-text">Hospital</span></span>
+          <span class="word" style="--delay: 3">Assistant</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Meet CareBot – an intelligent AI companion that understands your health needs, provides expert guidance, and connects you to quality healthcare 24/7.
+        </p>
+
+        <div class="hero-features">
+          <div class="feature" style="--delay: 0">
+            <div class="feature-icon">🤖</div>
+            <div class="feature-text">
+              <h4>AI Powered</h4>
+              <p>Intelligent responses</p>
+            </div>
+          </div>
+          <div class="feature" style="--delay: 0.1">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <h4>Instant Help</h4>
+              <p>24/7 Available</p>
+            </div>
+          </div>
+          <div class="feature" style="--delay: 0.2">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-text">
+              <h4>Smart Routing</h4>
+              <p>Right department</p>
+            </div>
+          </div>
+          <div class="feature" style="--delay: 0.3">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-text">
+              <h4>Secure & Private</h4>
+              <p>Your data protected</p>
+            </div>
+          </div>
         </div>
-        <div class="stat-item">
-          <div class="stat-num">99%</div>
-          <div class="stat-label">Satisfaction</div>
+
+        <div class="hero-cta">
+          <a href="index.html" class="btn-primary">
+            <span class="btn-content">
+              Enter CareBot
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+            <span class="btn-glow"></span>
+          </a>
+          <a href="#explore" class="btn-outline">
+            <span>Learn More</span>
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card" style="--delay: 0">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Always Available</div>
+          </div>
+          <div class="stat-card" style="--delay: 0.1">
+            <div class="stat-value">50K+</div>
+            <div class="stat-label">Consultations</div>
+          </div>
+          <div class="stat-card" style="--delay: 0.2">
+            <div class="stat-value">99%</div>
+            <div class="stat-label">User Satisfaction</div>
+          </div>
         </div>
       </div>
 
-      <div class="scroll-indicator">
-        <span>Scroll to explore</span>
-        <div class="scroll-mouse"></div>
+      <div class="hero-visual">
+        <div class="ai-avatar">
+          <div class="avatar-glow"></div>
+          <div class="avatar-inner">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <!-- Brain icon -->
+              <circle cx="50" cy="40" r="12" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M38 40 Q35 35 35 30 Q35 25 40 25 Q43 25 45 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M62 40 Q65 35 65 30 Q65 25 60 25 Q57 25 55 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="50" cy="50" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="50" cy="65" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M38 50 L30 50 M62 50 L70 50 M50 38 L50 30 M50 72 L50 80" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="avatar-scan"></div>
+        </div>
+
+        <div class="floating-cards">
+          <div class="card card-1" style="--delay: 0">
+            <div class="card-icon">💬</div>
+            <div class="card-text">Ask Questions</div>
+          </div>
+          <div class="card card-2" style="--delay: 0.2">
+            <div class="card-icon">📅</div>
+            <div class="card-text">Book Appointment</div>
+          </div>
+          <div class="card card-3" style="--delay: 0.4">
+            <div class="card-icon">🏥</div>
+            <div class="card-text">Find Specialists</div>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <!-- ─── SCROLL INDICATOR ─── -->
+    <div class="scroll-indicator">
+      <svg class="scroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 16 12 12 9 14"/>
+      </svg>
+      <span>Scroll to explore</span>
     </div>
   </div>
 
-  <script>
-    // ─── THEME TOGGLE ───
-    const html = document.documentElement;
-    const themeToggle = document.getElementById("themeToggle");
+  <!-- ─── FEATURES SECTION ─── -->
+  <section class="features-section" id="explore">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2>Why Choose <span class="gradient-text">CareBot</span></h2>
+        <p>Everything you need for intelligent healthcare</p>
+      </div>
 
-    function getCurrentTheme() {
-      return html.getAttribute("data-theme");
-    }
+      <div class="features-grid">
+        <div class="feature-card" style="--delay: 0">
+          <div class="feature-card-icon">🚀</div>
+          <h3>Lightning Fast</h3>
+          <p>Get instant responses to your health queries powered by cutting-edge AI technology.</p>
+        </div>
+        <div class="feature-card" style="--delay: 0.1">
+          <div class="feature-card-icon">🎯</div>
+          <h3>Smart Diagnosis</h3>
+          <p>Intelligent symptom analysis and personalized department recommendations.</p>
+        </div>
+        <div class="feature-card" style="--delay: 0.2">
+          <div class="feature-card-icon">👨‍⚕️</div>
+          <h3>Expert Connection</h3>
+          <p>Direct access to qualified specialists across 20+ medical departments.</p>
+        </div>
+        <div class="feature-card" style="--delay: 0.3">
+          <div class="feature-card-icon">🔐</div>
+          <h3>Privacy First</h3>
+          <p>Military-grade encryption protects your personal health information.</p>
+        </div>
+        <div class="feature-card" style="--delay: 0.4">
+          <div class="feature-card-icon">📱</div>
+          <h3>Mobile Ready</h3>
+          <p>Seamless experience on any device, anytime, anywhere.</p>
+        </div>
+        <div class="feature-card" style="--delay: 0.5">
+          <div class="feature-card-icon">🌍</div>
+          <h3>Always On</h3>
+          <p>Available 24/7, 365 days a year. No waiting, no limits.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    function setTheme(theme) {
-      html.setAttribute("data-theme", theme);
-      localStorage.setItem("carebot-theme", theme);
-    }
+  <!-- ─── CTA SECTION ─── -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <div class="cta-badge">Ready to get started?</div>
+      <h2>Begin Your Healthcare Journey</h2>
+      <p>Join thousands of users who trust CareBot for intelligent healthcare guidance.</p>
+      
+      <div class="cta-buttons">
+        <a href="index.html" class="btn-large">
+          Launch CareBot
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 
-    function toggleTheme() {
-      const current = getCurrentTheme();
-      setTheme(current === "dark" ? "light" : "dark");
-    }
+  <!-- ─── FOOTER ─── -->
+  <footer class="welcome-footer">
+    <p>&copy; 2025 CareBot AI. Your intelligent healthcare companion.</p>
+  </footer>
 
-    // Load saved theme on page load
-    (function () {
-      const saved = localStorage.getItem("carebot-theme");
-      if (saved) setTheme(saved);
-    })();
-
-    themeToggle.addEventListener("click", toggleTheme);
-  </script>
-
+  <script src="welcome-script.js"></script>
 </body>
 </html>
